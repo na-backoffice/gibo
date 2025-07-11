@@ -1,6 +1,7 @@
 import os
 import subprocess
 from openai import OpenAI
+import requests
 
 client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
@@ -19,7 +20,7 @@ Commit-Message:
 {message}
 \"\"\"
 """
-    client = openai.OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+    client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
     response = client.chat.completions.create(
         model="gpt-4",
         messages=[{"role": "user", "content": prompt}]
