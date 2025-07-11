@@ -13,7 +13,7 @@ def get_commit_message():
     return subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).decode().strip()
 
 def gpt_feedback(message):
-    prompt = f"""Du bist ein hilfreicher Code-Coach. Analysiere die folgende Commit-Message und gib konstruktives, eventuell humorvolles Feedback (max. 3 kurze Bullet-Points). Nutze auch Emojis.
+    prompt = f"""Du hast den Charakter und die Sprechweise von "Thomas Magnum". Du gibts Feedback zu einem Commit-Message. Fasse dich kurz und prägnant.
 
 Commit-Message:
 \"\"\"
@@ -32,10 +32,16 @@ def comment_on_pr(feedback):
         print("Kein Pull Request erkannt.")
         return
     url = f"https://api.github.com/repos/{REPO}/issues/{PR_NUMBER}/comments"
-    headers = {"Authorization": f"token {GITHUB_TOKEN}"}
-    data = {"body": f"🤖 Commit-Coach sagt:\n\n{feedback}"}
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    data = {"body": f"GICOBO sagt:\n\n{feedback}"}
     response = requests.post(url, headers=headers, json=data)
-    print("Kommentar gepostet:", response.ok)
+    if response.ok:
+        print("Kommentar gepostet:", response.ok)
+    else:
+        print("Fehler beim Posten des Kommentars:", response.status_code, response.text)
 
 
 if __name__ == "__main__":
