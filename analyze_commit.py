@@ -37,13 +37,9 @@ def comment_on_pr(feedback):
     response = requests.post(url, headers=headers, json=data)
     print("Kommentar gepostet:", response.ok)
 
-def update_readme(feedback):
-    with open("README.md", "a") as f:
-        f.write(f"\n\n## 🧠 Letzter Commit:\n\n{feedback}\n")
 
 if __name__ == "__main__":
     commit_msg = get_commit_message()
     feedback = gpt_feedback(commit_msg)
     print("GPT Feedback:\n", feedback)
-    update_readme(feedback)
     comment_on_pr(feedback)
